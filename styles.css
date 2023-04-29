@@ -6,7 +6,7 @@
   font-size: 20px;
 }
 .keyboard-container {
-  width: 920px;
+  width: 890px;
   margin: 0 auto;
 }
 .line-break {
@@ -31,7 +31,7 @@
   box-shadow: inset 0px 3px 1px rgba(211, 42, 42, 0.15);
   border-radius: 6px;
 }
-.key:active {
+.key.active {
   background: linear-gradient(
       180deg,
       rgba(31, 4, 4, 0.863) 0%,
@@ -39,9 +39,17 @@
     ),
     #191a1f;
 }
+.key:active{
+  background: linear-gradient(
+    180deg,
+    rgba(31, 4, 4, 0.863) 0%,
+    rgba(75, 72, 72, 0.06) 100%
+  ),
+  #191a1f;
+}
 .wide-key {
   width: 100px;
 }
 .space{
-  width: 400px;
+  width: 430px;
 }
