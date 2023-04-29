@@ -1,0 +1,49 @@
+.input {
+  display: block;
+  width: 800px;
+  height: 400px;
+  margin: 0 auto;
+  font-size: 20px;
+}
+.keyboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: bisque;
+}
+.line-break {
+  width: 100%;
+  flex-grow: 1;
+}
+.key {
+  margin: 3px;
+  height: 40px;
+  width: 50px;
+  color: #ffffff;
+  outline: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  background: linear-gradient(
+      180deg,
+      rgba(148, 101, 101, 0.863) 0%,
+      rgba(75, 72, 72, 0.06) 100%
+    ),
+    #191a1f;
+  box-sizing: border-box;
+  box-shadow: inset 0px 3px 1px rgba(211, 42, 42, 0.15);
+  border-radius: 6px;
+}
+.key:active {
+  background: linear-gradient(
+      180deg,
+      rgba(31, 4, 4, 0.863) 0%,
+      rgba(58, 15, 15, 0.06) 100%
+    ),
+    #191a1f;
+}
+.wide-key {
+  width: 100px;
+}
