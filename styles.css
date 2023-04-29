@@ -6,13 +6,8 @@
   font-size: 20px;
 }
 .keyboard-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  max-width: 800px;
+  width: 920px;
   margin: 0 auto;
-  background-color: bisque;
 }
 .line-break {
   width: 100%;
@@ -40,10 +35,13 @@
   background: linear-gradient(
       180deg,
       rgba(31, 4, 4, 0.863) 0%,
-      rgba(58, 15, 15, 0.06) 100%
+      rgba(75, 72, 72, 0.06) 100%
     ),
     #191a1f;
 }
 .wide-key {
   width: 100px;
+}
+.space{
+  width: 400px;
 }
