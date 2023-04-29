@@ -32,9 +32,7 @@ currentLang.forEach((key, i) => {
     keyboardBox.appendChild(document.createElement("br"));
   }
   if (
-
     key === "enter" ||
-    key === "Tab" ||
     key === "caps" ||
     key === "backspace" ||
     key === "shift"
@@ -53,12 +51,39 @@ function wideKey(button) {
 
 document.body.appendChild(keyboardBox);
 
-function writeMashine(event) { //шукаю клик
+
+
+function writeMachine(event) {
     const target = event.target;
     if (target.classList.contains("key")) {
-      input.textContent += target.textContent;
-      console.log(target.textContent);
+      const character = target.textContent;
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      input.value = input.value.slice(0, start) + character + input.value.slice(end);
+      input.setSelectionRange(start + 1, start + 1);
+      input.focus();
     }
   }
 
-  keyboardBox.addEventListener("click", writeMashine);
+  keyboardBox.addEventListener("click", writeMachine);
+
+
+  const keyboardKeys = document.querySelectorAll(".key"); // тут на нажатиях синхрон клавиш
+
+document.addEventListener("keydown", (event) => {
+  const key = event.key.toLowerCase();
+  keyboardKeys.forEach((keyButton) => {
+    if (keyButton.textContent.toLowerCase() === key) {
+      keyButton.classList.add("active");
+    }
+});
+});
+
+document.addEventListener("keyup", (event) => {
+  const key = event.key.toLowerCase();
+  keyboardKeys.forEach((keyButton) => {
+    if (keyButton.textContent.toLowerCase() === key) {
+      keyButton.classList.remove("active");
+    }
+  });
+});
