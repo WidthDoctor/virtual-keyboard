@@ -5,6 +5,13 @@ const ru = [
     "shift","я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ".","up","shift",
     "ctrl","alt","space","alt","ctrl","left","down","right"
 ];
+const ruShift = [
+  "Ё","!", "\"", "№", ";", "%", ":", "?", "*", "(", ")","_", "+","backspace",
+  "Tab","Й", "Ц", "У", "К", "Е", "Н", "Г", "Ш", "Щ", "З","Х","Ъ","\/","del",
+  "caps", "Ф", "Ы", "В", "А", "П", "Р", "О", "Л", "Д", "Ж","Э","enter",
+  "shift","Я", "Ч", "С", "М", "И", "Т", "Ь", "Б", "Ю", ",","up","shift",
+  "ctrl","alt","space","alt","ctrl","left","down","right"
+];
 
 const en = [
     "`","1", "2", "3", "4", "5", "6", "7", "8", "9", "0","-", "=","backspace",
@@ -13,7 +20,15 @@ const en = [
     "shift","z", "x", "c", "v", "b", "n", "m", ",", ".", "/","up","shift",
     "ctrl","alt","space","alt","ctrl","left","down","right"
 ];
+const enShift = [
+  "~","!", "@", "#", "$", "%", "^", "&", "*", "(", ")","_", "+","backspace",
+  "Tab","Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P","{","}","|","del",
+  "caps", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":","\"","enter",
+  "shift","Z", "X", "C", "V", "B", "N", "M", "<", ">", "?","up","shift",
+  "ctrl","alt","space","alt","ctrl","left","down","right"
+];
 let currentLang = en;
+let shiftPressed = false;
 
 const input = document.createElement('textarea');
 input.classList.add('input');
@@ -23,27 +38,30 @@ const keyboardBox = document.createElement('div');
 keyboardBox.classList.add('keyboard-container');
 document.body.append(keyboardBox);
 
-currentLang.forEach((key, i) => {
-  const button = document.createElement("button");
-  button.classList.add("key");
-  button.textContent = key;
-  if (i === 14 || i === 29 || i === 42 || i === 55) { //перенос по индексу
-    keyboardBox.appendChild(document.createElement("br"));
-  }
-  if (
-    key === "enter" ||
-    key === "caps" ||
-    key === "backspace" ||
-    key === "shift"
-  ) {
-    wideKey(button);
-  }
-  if(key==="space"){
-    button.classList.add('space')
-  }
-  keyboardBox.appendChild(button);
-});
-
+function createKeyboard(){
+  currentLang.forEach((key, i) => {
+    const button = document.createElement("button");
+    button.classList.add("key");
+    button.textContent = key;
+    if (i === 14 || i === 29 || i === 42 || i === 55) {
+      //перенос по индексу
+      keyboardBox.appendChild(document.createElement("br"));
+    }
+    if (
+      key === "enter" ||
+      key === "caps" ||
+      key === "backspace" ||
+      key === "shift"
+    ) {
+      wideKey(button);
+    }
+    if (key === "space") {
+      button.classList.add("space");
+    }
+    keyboardBox.appendChild(button);
+  });
+}
+createKeyboard();
 function wideKey(button) {
     button.classList.add("wide-key");
 }
@@ -55,6 +73,13 @@ document.body.appendChild(keyboardBox);
 function writeMashine(event) {
   const target = event.target;
   input.focus();
+  // проверяем наличие кнопок на странице
+  const existingKeys = document.querySelectorAll('.key');
+  if (existingKeys.length > 0) {
+    // если кнопки есть, то заменяем на новый язык
+    replaceKeys(currentLang);
+  }
+
   //шукаю клик
   if (target.classList.contains("key")) {
     const start = input.selectionStart;
@@ -63,7 +88,10 @@ function writeMashine(event) {
     if (target.textContent === "Tab") {
       event.preventDefault();
       handleTabKeyPress(event);
-    } else if (target.textContent === "backspace") {
+    }else if (target.textContent === "shift"){
+      event.preventDefault();
+      handleShiftKeyPress();
+    }else if (target.textContent === "backspace") {
       event.preventDefault();
       handleBackspaceKeyPress(event);
     } else {
@@ -79,15 +107,34 @@ function writeMashine(event) {
   document.addEventListener("keydown", (event) => {
     const key = event.key.toLowerCase();
     keyboardKeys.forEach((keyButton) => {
+      if (event.ctrlKey && event.altKey) {
+        if (currentLang==en) {//работа шифта
+          currentLang=ru;
+          replaceKeys(ru);
+        }else if (currentLang==ru) {
+          currentLang=en;
+          replaceKeys(en);
+        }else if(currentLang==enShift){
+          currentLang=ruShift;
+          replaceKeys(ruShift);
+        }else if (currentLang==ruShift) {
+          currentLang=enShift;
+          replaceKeys(enShift);
+        }
+      }
+      if (event.key === "Shift") {
+        shiftPressed = true;
+        handleShiftKeyPress();
+      }
       if (keyButton.textContent.toLowerCase() === key) {
         keyButton.classList.add("active");
         input.focus();
       }
     });
-    if (event.key === "Backspace") { //доделать при нажатии на виртуалке чтобы все чотко работало
-          event.preventDefault();
-          handleBackspaceKeyPress(event);
-        }
+    if (event.key === "Backspace") {
+      event.preventDefault();
+      handleBackspaceKeyPress(event);
+    }
     if (event.key === "Tab") {
       event.preventDefault();
       handleTabKeyPress(event);
@@ -97,12 +144,36 @@ function writeMashine(event) {
   document.addEventListener("keyup", (event) => {
     const key = event.key.toLowerCase();
     keyboardKeys.forEach((keyButton) => {
+      if (event.key === "Shift") {
+        shiftPressed = false;
+        handleShiftKeyPress();
+      }
       if (keyButton.textContent.toLowerCase() === key) {
         keyButton.classList.remove("active");
       }
     });
   });
-
+  function handleShiftKeyPress() {
+    if(currentLang==en){
+      currentLang = enShift;
+      replaceKeys(enShift);
+    }else if(currentLang==enShift){
+      currentLang = en;
+      replaceKeys(en);
+    }else if (currentLang==ru) {
+      currentLang=ruShift;
+      replaceKeys(ruShift);
+    }else if (currentLang==ruShift) {
+      currentLang=ru;
+      replaceKeys(ru);
+    }
+  }
+  function replaceKeys(lang) {
+    const keys = document.querySelectorAll('.key');
+    keys.forEach((key, i) => {
+      key.textContent = lang[i];
+    });
+  }
   function handleTabKeyPress(event) {
     event.preventDefault();
     const cursorPosition = input.selectionStart;
