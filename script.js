@@ -94,7 +94,13 @@ function writeMashine(event) {
     }else if (target.textContent === "backspace") {
       event.preventDefault();
       handleBackspaceKeyPress(event);
-    } else {
+    } else if (target.textContent === "space") {
+      event.preventDefault();
+      handleSpaceKeyPress();
+    } else if (target.textContent === "del") {
+      event.preventDefault();
+      handleDelKeyPress();
+    } else{
       input.value =
         input.value.slice(0, start) + character + input.value.slice(end);
       input.setSelectionRange(start + 1, start + 1);
@@ -153,6 +159,22 @@ function writeMashine(event) {
       }
     });
   });
+
+  function handleSpaceKeyPress(){
+    const cursorPosition = input.selectionStart;
+    const textBeforeCursor = input.value.slice(0, cursorPosition);
+    const textAfterCursor = input.value.slice(cursorPosition);
+    const newText = textBeforeCursor + " " + textAfterCursor;
+    input.value = newText;
+    input.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
+  }
+  function handleDelKeyPress() {
+    const cursorPosition = input.selectionEnd;
+
+    input.value = input.value.slice(0, cursorPosition) + input.value.slice(cursorPosition + 1);
+    input.setSelectionRange(cursorPosition, cursorPosition);
+  }
+
   function handleShiftKeyPress() {
     if(currentLang==en){
       currentLang = enShift;
