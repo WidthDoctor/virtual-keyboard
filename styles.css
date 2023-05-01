@@ -39,17 +39,17 @@
     ),
     #191a1f;
 }
-.key:active{
+.key:active {
   background: linear-gradient(
-    180deg,
-    rgba(31, 4, 4, 0.863) 0%,
-    rgba(75, 72, 72, 0.06) 100%
-  ),
-  #191a1f;
+      180deg,
+      rgba(31, 4, 4, 0.863) 0%,
+      rgba(75, 72, 72, 0.06) 100%
+    ),
+    #191a1f;
 }
 .wide-key {
   width: 100px;
 }
-.space{
+.space {
   width: 430px;
 }
