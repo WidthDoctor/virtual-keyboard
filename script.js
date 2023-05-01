@@ -259,6 +259,7 @@ const enShift = [
   "down",
   "right",
 ];
+
 const upperEN = en.map(function (str) {
   if (str.length === 1) {
     return str.toUpperCase();
@@ -273,7 +274,6 @@ const upperRU = ru.map(function (str) {
     return str;
   }
 });
-console.log(en[12].length);
 let currentLang = en;
 let shiftPressed = false;
 let capsPressed = false;
@@ -303,13 +303,28 @@ function createKeyboard() {
     ) {
       wideKey(button);
     }
-    if (key === "space") {
-      button.classList.add("space");
-    }
+    key === "space" ? button.classList.add("space") : null;
+    key === "alt" ? button.classList.add("alt") : null;
+    key === "ctrl" ? button.classList.add("ctrl") : null;
+    key === "left" ? button.classList.add("left") : null;
+    key === "right" ? button.classList.add("right") : null;
+    key === "up" ? button.classList.add("up") : null;
+    key === "down" ? button.classList.add("down") : null;
+    key === "enter" ? button.classList.add("enter") : null;
+    key === "del" ? button.classList.add("del") : null;
     keyboardBox.appendChild(button);
   });
 }
 createKeyboard();
+const space = document.querySelector(".space");
+const ctrl = document.querySelector(".ctrl");
+const alt = document.querySelector(".alt");
+const left = document.querySelector(".left");
+const right = document.querySelector(".right");
+const up = document.querySelector(".up");
+const down = document.querySelector(".down");
+const enter = document.querySelector(".enter");
+const del = document.querySelector(".del");
 function wideKey(button) {
   button.classList.add("wide-key");
 }
@@ -348,8 +363,18 @@ function writeMashine(event) {
       handleDelKeyPress();
     } else if (target.textContent === "CapsLock") {
       capsPressed = true;
-      console.log(capsPressed);
       caps();
+    } else if (target.textContent === "ctrl" || target.textContent === "alt") {
+      input.value = input.value.slice(0, start) + "" + input.value.slice(end);
+    } else if (
+      target.textContent === "up" ||
+      target.textContent === "left" ||
+      target.textContent === "right" ||
+      target.textContent === "down"
+    ) {
+      arrows(target);
+    } else if (target.textContent === "enter") {
+      mouseEnter();
     } else {
       input.value =
         input.value.slice(0, start) + character + input.value.slice(end);
@@ -362,7 +387,6 @@ const keyboardKeys = document.querySelectorAll(".key");
 
 document.addEventListener("keydown", (event) => {
   const key = event.key;
-  console.log(key);
   keyboardKeys.forEach((keyButton) => {
     if (event.ctrlKey && event.altKey) {
       if (currentLang == en) {
@@ -388,11 +412,19 @@ document.addEventListener("keydown", (event) => {
       keyButton.classList.add("active");
       input.focus();
     }
+    event.key === " " ? space.classList.add("active") : null;
+    event.key === "Control" ? ctrl.classList.add("active") : null;
+    event.key === "Alt" ? alt.classList.add("active") : null;
+    event.key === "ArrowUp" ? up.classList.add("active") : null;
+    event.key === "ArrowLeft" ? left.classList.add("active") : null;
+    event.key === "ArrowRight" ? right.classList.add("active") : null;
+    event.key === "ArrowDown" ? down.classList.add("active") : null;
+    event.key === "Enter" ? enter.classList.add("active") : null;
+    event.key === "Delete" ? del.classList.add("active") : null;
   });
 
   if (event.key === "CapsLock") {
     capsPressed = true;
-    console.log(capsPressed);
     event.preventDefault();
     caps();
   }
@@ -404,8 +436,69 @@ document.addEventListener("keydown", (event) => {
     event.preventDefault();
     handleTabKeyPress(event);
   }
+  if (
+    event.key === "ArrowUp" ||
+    event.key === "ArrowRight" ||
+    event.key === "ArrowLeft" ||
+    event.key === "ArrowDown"
+  ) {
+    arrows(event);
+  }
 });
 
+function arrows(target) {
+  console.log(target.key);
+  const start = input.selectionStart;
+  const end = input.selectionEnd;
+  const arrowUp = String.fromCharCode(8593);
+  const arrowDown = String.fromCharCode(8595);
+  const arrowLeft = String.fromCharCode(8592);
+  const arrowRight = String.fromCharCode(8594);
+  target.textContent === "up"
+    ? ((input.value =
+        input.value.slice(0, start) + arrowUp + input.value.slice(end)),
+      input.setSelectionRange(start + 1, start + 1))
+    : null;
+  target.textContent === "left"
+    ? ((input.value =
+        input.value.slice(0, start) + arrowLeft + input.value.slice(end)),
+      input.setSelectionRange(start + 1, start + 1))
+    : null;
+  target.textContent === "right"
+    ? ((input.value =
+        input.value.slice(0, start) + arrowRight + input.value.slice(end)),
+      input.setSelectionRange(start + 1, start + 1))
+    : null;
+  target.textContent === "down"
+    ? ((input.value =
+        input.value.slice(0, start) + arrowDown + input.value.slice(end)),
+      input.setSelectionRange(start + 1, start + 1))
+    : null;
+  target.key === "ArrowUp"
+    ? (target.preventDefault(),
+      (input.value =
+        input.value.slice(0, start) + arrowUp + input.value.slice(end)),
+      input.setSelectionRange(start + 1, start + 1))
+    : null;
+  target.key === "ArrowLeft"
+    ? (target.preventDefault(),
+      (input.value =
+        input.value.slice(0, start) + arrowLeft + input.value.slice(end)),
+      input.setSelectionRange(start + 1, start + 1))
+    : null;
+  target.key === "ArrowRight"
+    ? (target.preventDefault(),
+      (input.value =
+        input.value.slice(0, start) + arrowRight + input.value.slice(end)),
+      input.setSelectionRange(start + 1, start + 1))
+    : null;
+  target.key === "ArrowDown"
+    ? (target.preventDefault(),
+      (input.value =
+        input.value.slice(0, start) + arrowDown + input.value.slice(end)),
+      input.setSelectionRange(start + 1, start + 1))
+    : null;
+}
 document.addEventListener("keyup", (event) => {
   const key = event.key;
   keyboardKeys.forEach((keyButton) => {
@@ -416,9 +509,20 @@ document.addEventListener("keyup", (event) => {
     if (keyButton.textContent === key) {
       keyButton.classList.remove("active");
     }
+    event.key === " " ? space.classList.remove("active") : null;
+    event.key === "Control" ? ctrl.classList.remove("active") : null;
+    event.key === "Alt" ? alt.classList.remove("active") : null;
+    event.key === "ArrowUp" ? up.classList.remove("active") : null;
+    event.key === "ArrowLeft" ? left.classList.remove("active") : null;
+    event.key === "ArrowRight" ? right.classList.remove("active") : null;
+    event.key === "ArrowDown" ? down.classList.remove("active") : null;
+    event.key === "Enter" ? enter.classList.remove("active") : null;
+    event.key === "Delete" ? del.classList.remove("active") : null;
   });
 });
-
+function mouseEnter() {
+  input.value += "\n";
+}
 function handleSpaceKeyPress() {
   const cursorPosition = input.selectionStart;
   const textBeforeCursor = input.value.slice(0, cursorPosition);
@@ -462,10 +566,13 @@ function replaceKeys(lang) {
   });
 }
 function handleShiftKeyPress() {
-  currentLang === en ? (currentLang = enShift, replaceKeys(enShift)) :
-  currentLang === enShift ? (currentLang = en, replaceKeys(en)) :
-  currentLang === ru ? (currentLang = ruShift, replaceKeys(ruShift)) :
-  (currentLang = ru, replaceKeys(ru));
+  currentLang === en
+    ? ((currentLang = enShift), replaceKeys(enShift))
+    : currentLang === enShift
+    ? ((currentLang = en), replaceKeys(en))
+    : currentLang === ru
+    ? ((currentLang = ruShift), replaceKeys(ruShift))
+    : ((currentLang = ru), replaceKeys(ru));
 }
 function handleTabKeyPress(event) {
   event.preventDefault();
