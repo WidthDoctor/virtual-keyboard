@@ -1,0 +1,55 @@
+.input {
+  display: block;
+  width: 800px;
+  height: 400px;
+  margin: 0 auto;
+  font-size: 20px;
+}
+.keyboard-container {
+  width: 890px;
+  margin: 0 auto;
+}
+.line-break {
+  width: 100%;
+  flex-grow: 1;
+}
+.key {
+  margin: 3px;
+  height: 40px;
+  width: 50px;
+  color: #ffffff;
+  outline: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  background: linear-gradient(
+      180deg,
+      rgba(148, 101, 101, 0.863) 0%,
+      rgba(75, 72, 72, 0.06) 100%
+    ),
+    #191a1f;
+  box-sizing: border-box;
+  box-shadow: inset 0px 3px 1px rgba(211, 42, 42, 0.15);
+  border-radius: 6px;
+}
+.key.active {
+  background: linear-gradient(
+      180deg,
+      rgba(31, 4, 4, 0.863) 0%,
+      rgba(75, 72, 72, 0.06) 100%
+    ),
+    #191a1f;
+}
+.key:active {
+  background: linear-gradient(
+      180deg,
+      rgba(31, 4, 4, 0.863) 0%,
+      rgba(75, 72, 72, 0.06) 100%
+    ),
+    #191a1f;
+}
+.wide-key {
+  width: 100px;
+}
+.space {
+  width: 430px;
+}
