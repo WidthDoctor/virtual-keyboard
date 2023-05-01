@@ -284,7 +284,13 @@ document.body.append(input);
 
 const keyboardBox = document.createElement("div");
 keyboardBox.classList.add("keyboard-container");
-document.body.append(keyboardBox);
+document.body.appendChild(keyboardBox);
+
+const language = document.createElement("div");
+const span= document.createElement("span");
+document.body.append(language);
+span.textContent="Смена языка ctrl + alt на живой клаве"
+language.appendChild(span)
 
 function createKeyboard() {
   currentLang.forEach((key, i) => {
