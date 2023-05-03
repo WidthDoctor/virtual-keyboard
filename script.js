@@ -358,6 +358,7 @@ function writeMashine(event) {
     } else if (target.textContent === 'Shift') {
       event.preventDefault();
       handleShiftKeyPress();
+      setTimeout(handleShiftKeyPress, 500);
     } else if (target.textContent === 'Backspace') {
       event.preventDefault();
       handleBackspaceKeyPress(event);
